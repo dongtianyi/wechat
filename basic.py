@@ -46,13 +46,13 @@ class WechatAPIException(WechatException):
         self.json_data = json_data
         self.uri = uri 
         self.data = data
-        super(WechatException, self).__init__(*args, **kwargs)
+        super(WechatException, self).__init__(str(self))
     
     def __str__(self):
 
         # {"errcode":40013,"errmsg":"invalid appid"}
         message = 'wechat api error. errcode=%s, errmsg=%s, api uri=%s, params=%s. ref url http://mp.weixin.qq.com/wiki/10/6380dc743053a91c544ffd2b7c959166.html'
-        return message % (self.json_data[errcode], self.json_data['errmsg'], self.uri, self.data)
+        return message % (self.json_data['errcode'], self.json_data['errmsg'], self.uri, self.data)
 
 
 class HttpMethodNotAllowedException(Exception):
@@ -181,9 +181,11 @@ class WechatCall(object):
         # import pdb; pdb.set_trace()
 
     def _handle_response(self, re, uri, arg_data):
+
+        json_data = re.json()
         # 检查返回结果
         if "errcode" in json_data and json_data["errcode"] != 0:
-            raise WechatAPIException(json_data=json_data, uri=url_base, data=data)
+            raise WechatAPIException(json_data=json_data, uri=uri, data=arg_data)
         return json_data
 
 
