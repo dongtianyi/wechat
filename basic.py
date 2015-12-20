@@ -51,7 +51,8 @@ class WechatAPIException(WechatException):
     def __str__(self):
 
         # {"errcode":40013,"errmsg":"invalid appid"}
-        message = 'wechat api error. errcode=%s, errmsg=%s, api uri=%s, params=%s. ref url http://mp.weixin.qq.com/wiki/10/6380dc743053a91c544ffd2b7c959166.html'
+        message = 'wechat api error. errcode=%s, errmsg=%s, api uri=%s, params=%s. \
+            ref url http://mp.weixin.qq.com/wiki/10/6380dc743053a91c544ffd2b7c959166.html'
         return message % (self.json_data['errcode'], self.json_data['errmsg'], self.uri, self.data)
 
 
@@ -205,7 +206,8 @@ class Wechat(WechatCall):
         # uri_parts = ()
         WechatCall.__init__(
             self, domain=domain, callable_cls= WechatCall, 
-            uri_parts=uri_parts, secure=secure, timeout=timeout, retry=retry, is_test=is_test)
+            uri_parts=uri_parts, secure=secure, 
+            timeout=timeout, retry=retry, is_test=is_test)
 
 
 __all__ = ["Wechat", "WechatCall"]
