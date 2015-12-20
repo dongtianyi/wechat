@@ -36,6 +36,24 @@ class WechatException(Exception):
     """
     pass
 
+class WechatHTTPException(WechatException):
+    pass
+
+
+class WechatAPIException(WechatException):
+
+    def __init__(self, json_data, uri, data={}):
+        self.json_data = json_data
+        self.uri = uri 
+        self.data = data
+        super(WechatException, self).__init__(*args, **kwargs)
+    
+    def __str__(self):
+
+        # {"errcode":40013,"errmsg":"invalid appid"}
+        message = 'wechat api error. errcode=%s, errmsg=%s, api uri=%s, params=%s. ref url http://mp.weixin.qq.com/wiki/10/6380dc743053a91c544ffd2b7c959166.html'
+        return message % (self.json_data[errcode], self.json_data['errmsg'], self.uri, self.data)
+
 
 class HttpMethodNotAllowedException(Exception):
     """
@@ -77,6 +95,18 @@ def check_http_method(http_method):
         return True 
     else:
         raise HttpMethodNotAllowedException
+
+# def wrap_response(response, headers):
+#     response_typ = type(response)
+#     if response_typ is dict:
+#         res = TwitterDictResponse(response)
+#         res.headers = headers
+#     elif response_typ is list:
+#         res = TwitterListResponse(response)
+#         res.headers = headers
+#     else:
+#         res = response
+#     return res
 
 
 class WechatCall(object):
@@ -145,10 +175,16 @@ class WechatCall(object):
             return (url_base, data)
         else:
             re = getattr(requests, lower_http_method)(url_base, data=data)
-            return re.json()
+            return self._handle_response(re=re, uri=url_base, arg_data=data)
         # json: send json data
         # re = getattr(requests, lower_http_method)(url_base, json=kwargs)
         # import pdb; pdb.set_trace()
+
+    def _handle_response(self, re, uri, arg_data):
+        # 检查返回结果
+        if "errcode" in json_data and json_data["errcode"] != 0:
+            raise WechatAPIException(json_data=json_data, uri=url_base, data=data)
+        return json_data
 
 
 class Wechat(WechatCall):
