@@ -10,4 +10,8 @@
     data = {'grant_type': 'client_credential', 'appid': appid, 'appsecret': appsecret}
     wechat_mp.token(http_method='get', data=data)
 
-    # 获取
+    # 获取用户基本信息（包括UnionID机制）
+    https://api.weixin.qq.com/cgi-bin/user/info?access_token=ACCESS_TOKEN&openid=OPENID&lang=zh_CN
+
+    data = {'access_token': access_token, 'openid': openid}
+    wechat_mp.user.info(data=data)
