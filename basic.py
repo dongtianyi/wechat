@@ -48,7 +48,7 @@ class HttpMethodNotAllowedException(Exception):
 
 def build_uri(orig_uriparts, kwargs):
     '''
-    使用参数生成url, Modifies kwargs.
+    使用参数生成url
     kwargs 里面的参数不在这里面生成 uri，这个参数将会作为 requests的参数传入get or post
     如果有的 api 需要使用 kwargs里面的参数，在这里进行特殊处理
     '''
@@ -81,17 +81,7 @@ def check_http_method(http_method):
 
 class WechatCall(object):
     '''
-    目的：发送http请求到一个URL
-    1 生成 url  
-    2 发送 get or post 
-    3 处理 response
-
-    python动态语言和业务逻辑抽象
-    1 生成 url 
-    2 决定 get 或者 post 
-    3 处理 response
-
-    编成风格借鉴自：https://github.com/sixohsix/twitter/blob/master/twitter/api.py
+    ref：https://github.com/sixohsix/twitter/blob/master/twitter/api.py
     '''
 
     def __init__(
