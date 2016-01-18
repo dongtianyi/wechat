@@ -164,7 +164,7 @@ class WechatCall(object):
         if self.secure:
             secure_str = 's'
         # dot = ""
-        # import pdb; pdb.set_trace()
+        import pdb; pdb.set_trace()
         url_base = "http%s://%s/%s" % (secure_str, domain, uri)
         check_http_method(lower_http_method)
         # params: 展开所有的参数：
@@ -175,7 +175,7 @@ class WechatCall(object):
         if self.is_test:
             return (url_base, data)
         else:
-            re = getattr(requests, lower_http_method)(url_base, data=data)
+            re = getattr(requests, lower_http_method)(url_base, params=data)
             return self._handle_response(re=re, uri=url_base, arg_data=data)
         # json: send json data
         # re = getattr(requests, lower_http_method)(url_base, json=kwargs)
@@ -211,3 +211,8 @@ class Wechat(WechatCall):
 
 
 __all__ = ["Wechat", "WechatCall"]
+
+if __name__ == '__main__':
+    wechat_mp = Wechat(domain="qyapi.weixin.qq.com", uri_parts=('cgi-bin',))
+    data = {'corpid':'wx8b9f5cb846f005f7', 'corpsecret': 'tk7DMDA6YN0TQWBCIKIYifPBhFsO5dyx9sdOj2gEYImite3JRz8oa7ZM0DZXqGBJ'}
+    wechat_mp.gettoken(http_method='get', data=data)
