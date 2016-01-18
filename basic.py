@@ -4,9 +4,9 @@ import hashlib
 import logging
 import requests
 
-from logging.config import fileConfig
-fileConfig('log.conf')
-logger = logging.getLogger(__name__)
+# from logging.config import fileConfig
+# fileConfig('log.conf')
+# logger = logging.getLogger(__name__)
 
 '''
 递归动态生成可调用的类方法。
