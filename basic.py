@@ -164,7 +164,7 @@ class WechatCall(object):
         if self.secure:
             secure_str = 's'
         # dot = ""
-        import pdb; pdb.set_trace()
+        # import pdb; pdb.set_trace()
         url_base = "http%s://%s/%s" % (secure_str, domain, uri)
         check_http_method(lower_http_method)
         # params: 展开所有的参数：
